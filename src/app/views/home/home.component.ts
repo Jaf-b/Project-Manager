@@ -48,32 +48,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
     <mat-divider />
     <mat-menu #menuRef="matMenu">
       <button mat-menu-item>
-        <mat-icon>manage_accounts</mat-icon>
-        Gerer votre compte
-      </button>
-      <button mat-menu-item [matMenuTriggerFor]="menuRef2">
-        <mat-icon>dark_mode</mat-icon>
-        Theme
-      </button>
-      <button mat-menu-item>
         <mat-icon class="">logout</mat-icon>
         Deconnexion
       </button>
     </mat-menu>
-    <mat-menu #menuRef2="matMenu">
-      <button mat-menu-item>
-        <mat-icon>light_mode</mat-icon>
-        Mode Claire
-      </button>
-      <button mat-menu-item>
-        <mat-icon>dark_mode</mat-icon>
-        Mode sombre
-      </button>
-      <button mat-menu-item>
-        <mat-icon class="mat-18">computer </mat-icon>
-        Thème de l'appareil
-      </button>
-    </mat-menu>
+
     <mat-drawer-container>
       <mat-drawer #drawer mode="over">
         <a
