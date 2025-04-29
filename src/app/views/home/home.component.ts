@@ -6,7 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { APP_NAME } from '../../constant';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import {
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
 import { AuthenticationService } from '../../core/services/firebase/authentication.service';
 import { Subscription } from 'rxjs';
 import { User } from '@angular/fire/auth';
@@ -108,8 +113,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 export default class HomeComponent {
   title = APP_NAME;
   AuthService = inject(AuthenticationService);
+  router = inject(Router);
   User = toSignal(this.AuthService.user);
   logout() {
-    this.AuthService.logout();
+    this.AuthService.logout().then(() => this.router.navigate(['login']));
   }
 }
