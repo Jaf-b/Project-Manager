@@ -32,7 +32,7 @@ import { Router, RouterLink } from '@angular/router';
           Ajouter un projet
         </button>
       </div>
-      <div style="display: flex;gap:1rem">
+      <div style="display: flex;gap:1rem;flex-wrap:wrap;justify-content:center">
         @for (project of projectList; track $index) {
         <a (click)="LoadProject(project.id)">
           <app-project [project]="project" style="cursor:pointer" />

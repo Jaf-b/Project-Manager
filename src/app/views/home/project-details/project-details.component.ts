@@ -29,7 +29,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthenticationService } from '../../../core/services/firebase/authentication.service';
 import { Projet } from '../../../core/model/projet';
 import { Subscription } from 'rxjs';
-
+import { WindowsService } from '../../../core/services/utilities/windows.service';
+import { MatTabsModule } from '@angular/material/tabs';
 @Component({
   selector: 'app-project-details',
   imports: [
@@ -40,20 +41,105 @@ import { Subscription } from 'rxjs';
     CdkDropList,
     CambanColumnComponent,
     ProjectDashboardComponent,
+    MatTabsModule,
   ],
   template: `
-    <app-project-dashboard
-      [DoneTask]="doneTask.length"
-      [InProgressTask]="inProgressTask.length"
-      [ToDoTask]="todoTask.length"
-      [project]="project"
-      [IsAdmin]="isAdmin"
-      [Progression]="
-        (doneTask.length /
-          (doneTask.length + inProgressTask.length + todoTask.length)) *
-        100
-      "
-    />
+    @if(width() < 720){
+    <mat-tab-group [disableRipple]="false">
+      <mat-tab label="Dashbord">
+        <app-project-dashboard
+          [DoneTask]="doneTask.length"
+          [InProgressTask]="inProgressTask.length"
+          [ToDoTask]="todoTask.length"
+          [project]="project"
+          [IsAdmin]="isAdmin"
+          [Progression]="
+            (doneTask.length /
+              (doneTask.length + inProgressTask.length + todoTask.length)) *
+            100
+          "
+        />
+      </mat-tab>
+      <mat-tab label="A Faire">
+        <mat-card
+          appearance="outlined"
+          style="max-width: 370px;margin:1rem auto"
+        >
+          <app-camban-column
+            (close)="reload()"
+            [columnDetails]="columnDetails[0]"
+            cdkDropList
+            id="ToDo"
+            #ToDo="cdkDropList"
+            cdkDropListAutoScrollDisabled
+            [ListOfTask]="todoTask"
+            [cdkDropListData]="todoTask"
+            (cdkDropListDropped)="drop($event)"
+            (open)="OnOpenDialog()"
+            [cdkDropListConnectedTo]="[InProgress, Done]"
+            [isAdmin]="isAdmin"
+          />
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="Encours">
+        <mat-card
+          appearance="outlined"
+          style="max-width: 370px;margin:1rem auto"
+        >
+          <app-camban-column
+            (close)="reload()"
+            [columnDetails]="columnDetails[1]"
+            cdkDropList
+            id="InProgress"
+            #InProgress="cdkDropList"
+            [ListOfTask]="inProgressTask"
+            cdkDropListAutoScrollDisabled
+            [cdkDropListData]="inProgressTask"
+            (cdkDropListDropped)="drop($event)"
+            [cdkDropListConnectedTo]="[ToDo, Done]"
+            [isAdmin]="isAdmin"
+          />
+        </mat-card>
+      </mat-tab>
+      <mat-tab label="Terminées">
+        <mat-card
+          appearance="outlined"
+          style="max-width: 370px;margin:1rem auto"
+        >
+          <app-camban-column
+            (close)="reload()"
+            [columnDetails]="columnDetails[2]"
+            [isAdmin]="isAdmin"
+            [ListOfTask]="doneTask"
+            cdkDropList
+            id="Done"
+            #Done="cdkDropList"
+            cdkDropListAutoScrollDisabled
+            [cdkDropListData]="doneTask"
+            (cdkDropListDropped)="drop($event)"
+            [cdkDropListConnectedTo]="[InProgress, ToDo]"
+          />
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+    }@else {
+    <mat-card
+      style="height:250px;width:1100px;margin:auto;border:none"
+      appearance="outlined"
+    >
+      <app-project-dashboard
+        [DoneTask]="doneTask.length"
+        [InProgressTask]="inProgressTask.length"
+        [ToDoTask]="todoTask.length"
+        [project]="project"
+        [IsAdmin]="isAdmin"
+        [Progression]="
+          (doneTask.length /
+            (doneTask.length + inProgressTask.length + todoTask.length)) *
+          100
+        "
+      />
+    </mat-card>
     <div class="container">
       <mat-card appearance="outlined">
         <app-camban-column
@@ -102,6 +188,7 @@ import { Subscription } from 'rxjs';
         />
       </mat-card>
     </div>
+    }
   `,
   styles: `
   .container{
@@ -153,6 +240,7 @@ export default class ProjectDetailsComponent implements OnInit {
   todoTask: task<Timestamp>[] = [];
   inProgressTask: task<Timestamp>[] = [];
   doneTask: task<Timestamp>[] = [];
+  width = inject(WindowsService).width;
   id = input(' ');
   isAdmin = false;
   columnDetails: columnDetails[] = [

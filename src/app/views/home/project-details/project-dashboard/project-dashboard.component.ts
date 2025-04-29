@@ -20,9 +20,7 @@ import { DeleteProjectComponent } from '../../project-list/project/project-compo
     MatProgressBarModule,
   ],
   template: `
-    <div
-      style="display:flex;gap:1rem;margin:auto;width:1100px;margin-top:1rem;"
-    >
+    <mat-card-content class="container">
       <mat-card style="max-width:330px;height:210px" appearance="outlined">
         <mat-card-content>
           <div style="display: flex;flex-direction:column;gap:0.2rem">
@@ -113,7 +111,7 @@ import { DeleteProjectComponent } from '../../project-list/project/project-compo
           </mat-card-content>
         </mat-card>
       </div>
-    </div>
+    </mat-card-content>
   `,
   styles: `
   .description{
@@ -125,7 +123,12 @@ import { DeleteProjectComponent } from '../../project-list/project/project-compo
   color:gray;
   font-size:15px;
   }
-  .progressBar{
+  .container{
+    display:flex;
+    gap:0.5rem;
+    flex-wrap:wrap;
+  }
+.progressBar{
     display:flex;
     justify-content:center;
     align-items:center;

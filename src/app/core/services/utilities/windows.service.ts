@@ -1,9 +1,14 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WindowsService {
-
-  constructor() { }
+  width = signal(window.innerWidth);
+  constructor() {
+    const obs = new ResizeObserver((entries) => {
+      const bboxsize = entries[0].borderBoxSize;
+      this.width.set(bboxsize[0].inlineSize);
+    }).observe(document.body);
+  }
 }

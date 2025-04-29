@@ -110,6 +110,6 @@ export default class HomeComponent {
   AuthService = inject(AuthenticationService);
   User = toSignal(this.AuthService.user);
   logout() {
-    this.AuthService.logout;
+    this.AuthService.logout();
   }
 }
