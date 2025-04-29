@@ -12,7 +12,7 @@ import {
   setDoc,
   where,
 } from '@angular/fire/firestore';
-import { User } from 'firebase/auth';
+import { signOut, User } from 'firebase/auth';
 import { Projet } from '../../model/projet';
 import { getDoc, orderBy, Timestamp } from 'firebase/firestore';
 import { task } from '../../model/task';
@@ -76,6 +76,7 @@ export class DatabaseServiceService {
   deleteData(colName: string, id: string) {
     return deleteDoc(doc(this.fs, colName, id));
   }
+
   // change formated Timestamp in  normal date
   formatedTimestamp = (t?: Timestamp) => (t?.seconds ? t.toDate() : new Date());
 }

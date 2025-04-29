@@ -47,7 +47,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
     </mat-toolbar>
     <mat-divider />
     <mat-menu #menuRef="matMenu">
-      <button mat-menu-item>
+      <button mat-menu-item (click)="logout()">
         <mat-icon class="">logout</mat-icon>
         Deconnexion
       </button>
@@ -109,4 +109,7 @@ export default class HomeComponent {
   title = APP_NAME;
   AuthService = inject(AuthenticationService);
   User = toSignal(this.AuthService.user);
+  logout() {
+    this.AuthService.logout;
+  }
 }
